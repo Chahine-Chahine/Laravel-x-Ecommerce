@@ -16,8 +16,10 @@ return new class extends Migration
             $table->string('username');
             $table->string('email');
             $table->string('password'); 
-            $table->unsignedBigInteger('user_type_id');
+            $table->bigInteger('user_type_id');
             $table->foreign('user_type_id')->references('user_type_id')->on('user_types');
+            $table->timestamp('created_at')->default(now());
+            $table->timestamp('updated_at')->default(now());
         });
     }
 

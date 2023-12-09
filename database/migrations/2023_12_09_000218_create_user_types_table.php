@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_types', function (Blueprint $table) {
-            $table->bigIncrements('user_type_id');
+            $table->bigInteger('user_type_id')->default(2)->primary();
             $table->string('user_type');
         });
     }
