@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('price');
             $table->unsignedBigInteger('seller_id');
             $table->foreign('seller_id')->references('user_id')->on('users');
+            $table->timestamps();
         });
     }
 

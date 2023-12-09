@@ -26,3 +26,4 @@ Route::controller(AuthController::class)->group(function () {
 
 
 Route::post('/createuser',[UsersController::class,'create_user']);
+Route::post('/createproduct',[ProductsController::class,'create_product']);
