@@ -33,7 +33,7 @@ class ProductsController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
     }
-    public function read_products(){
+    public function read_product(){
         if(auth()->check()){
             $user = Auth::user();
             if($user && $user-> user_type_id == 1){
@@ -50,4 +50,55 @@ class ProductsController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
     }
+    public function update_product(Request $req){
+        if(auth()->check()){
+        
+            $user = Auth::user();
+            if ($user && $user->user_type_id == 1) {
+                    $id_product = $req->product_id;
+            $product = Product::find($id_product);
+            if ($product && $user->user_id == $product->seller_id) {
+                $updateFields = [
+                    'product_name' => $req->product_name,
+                    'description' => $req->description,
+                    'price' => $req->price,
+        ];
+        
+        $product->update($updateFields);
+        
+        
+        return response()->json(['message' => 'Product updated successfully']);
+          }else{
+                return response()->json(['error'=>'Unauthorized'],401);
+            }
+        
+        
+            }else{
+                return response()->json(['error'=>'Unauthorized'],401);
+            }
+        }else{
+                return response()->json(['error'=>'Unauthorized'],401);
+            }
+    }
+    public function delete_product(Request $request)
+{
+    $user = Auth::user();
+    $product_id = $request->input('product_id');
+
+    if ($user && $user->user_type_id == 1) {
+        $product = Product::find($product_id);
+
+        if ($product && $user->user_id == $product->seller_id) {
+            $product->delete();
+
+            return response()->json(['message' => 'Product deleted successfully']);
+        } else {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+    } else {
+        return response()->json(['error' => 'Unauthorized'], 401);
+    }
 }
+
+    
+    }   
