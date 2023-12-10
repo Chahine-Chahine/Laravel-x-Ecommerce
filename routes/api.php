@@ -37,3 +37,5 @@ Route::post('/readtransaction',[TransactionsController::class,'read_transaction'
 Route::post('/createorder',[TransactionsController::class,'create_order']);
 Route::post('/shopping-cart/create',[ShoppingCartsController::class,'create_cart']);
 Route::post('/shopping-cart/read',[ShoppingCartsController::class,'read_cart']);
+Route::post('/shopping-cart/delete',[ShoppingCartsController::class,'delete_cart']);
+

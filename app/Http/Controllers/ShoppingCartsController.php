@@ -25,16 +25,26 @@ class ShoppingCartsController extends Controller
 
     public function read_cart(Request $request)
     {
-        $user = $request->user();
-        $shoppingCart = ShoppingCart::where('user_id', $user->user_id)->first();
-        $cartItems = $shoppingCart->cartItems;
-        return response()->json([
-            'Carts' => $shoppingCart,
-            'message' => 'shoppingCart desplayed successfully'
-        ]);
+        if ($request->user()) {
+            $user = $request->user();
+    
+            $shoppingCart = new ShoppingCart();
+            $shoppingCart->user_id = $user->user_id; 
+            $shoppingCart->save();
+    
+            $this->addDefaultItemsToCart($user);
+    
+            return response()->json([
+                'shoppingcart Items' => $shoppingCart,
+                'message' => 'shoppingCart desplayed successfully'
+            ]);
+        } else {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+    
     }
 
-    public function deleteCart(Request $request)
+    public function delete_cart(Request $request)
     {
         $user = $request->user();
         $shoppingCart = ShoppingCart::where('user_id', $user->user_id)->first();
@@ -42,14 +52,14 @@ class ShoppingCartsController extends Controller
         $shoppingCart->cartItems()->delete();
         $shoppingCart->delete();
 
-        return redirect()->route('dashboard')->with('success', 'Shopping cart deleted successfully.');
+        return response()->json(['message' => 'Shopping cart deleted successfully.']);
     }
 
     private function addDefaultItemsToCart($user)
     {
         $shoppingCart = ShoppingCart::where('user_id', $user->user_id)->first();
 
-        $products = Product::limit(2)->get();
+        $products = Product::limit(20)->get();
 
         foreach ($products as $product) {
             $cartItem = new CartItem();
