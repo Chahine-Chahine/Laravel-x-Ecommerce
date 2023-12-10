@@ -18,7 +18,7 @@ class TransactionsController extends Controller
                     'payment_method'=> $req-> payment_method,
                 ]);
 
-                return response()->json(['message' => 'Product added successfully']);
+                return response()->json(['message' => 'Transaction added successfully']);
             }else{
                 return response()->json(['error' => 'Unauthorized'], 401);
             }
