@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\TransactionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,3 +31,6 @@ Route::post('/createproduct',[ProductsController::class,'create_product']);
 Route::post('/readproduct',[ProductsController::class,'read_product']);
 Route::post('/updateproduct',[ProductsController::class,'update_product']);
 Route::post('/deleteproduct',[ProductsController::class,'delete_product']);
+Route::post('/createtransaction',[TransactionsController::class,'create_transaction']);
+Route::post('/readtransaction',[TransactionsController::class,'read_transaction']);
+Route::post('/createorder',[TransactionsController::class,'create_order']);
