@@ -24,25 +24,41 @@ class ShoppingCartsController extends Controller
     }
 
     public function read_cart(Request $request)
-    {
-        if ($request->user()) {
-            $user = $request->user();
-    
-            $shoppingCart = new ShoppingCart();
-            $shoppingCart->user_id = $user->user_id; 
-            $shoppingCart->save();
-    
-            $this->addDefaultItemsToCart($user);
-    
-            return response()->json([
-                'shoppingcart Items' => $shoppingCart,
-                'message' => 'shoppingCart desplayed successfully'
-            ]);
-        } else {
-            return response()->json(['error' => 'Unauthorized'], 401);
+{
+    if ($request->user()) {
+        $user = $request->user();
+
+        $shoppingCart = ShoppingCart::where('user_id', $user->user_id)->first();
+
+        if (!$shoppingCart) {
+            return response()->json(['error' => 'Shopping cart not found'], 404);
         }
-    
+
+        $cartItems = $shoppingCart->cartItems;
+
+        $productsInCart = [];
+        foreach ($cartItems as $cartItem) {
+            $product = $cartItem->product; 
+            $productsInCart[] = [
+                'cart_item_id' => $cartItem->cart_item_id,
+                'product_id' => $product->product_id,
+                'product_name' => $product->product_name,
+                'description' => $product->description,
+                'price' => $product->price,
+                'quantity' => $cartItem->quantity,
+            ];
+        }
+
+        return response()->json([
+            'shopping_cart' => $shoppingCart,
+            'products_in_cart' => $productsInCart,
+            'message' => 'Shopping cart and products displayed successfully',
+        ]);
+    } else {
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
+}
+
 
     public function delete_cart(Request $request)
     {
