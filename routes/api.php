@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\ShoppingCartsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,5 @@ Route::post('/deleteproduct',[ProductsController::class,'delete_product']);
 Route::post('/createtransaction',[TransactionsController::class,'create_transaction']);
 Route::post('/readtransaction',[TransactionsController::class,'read_transaction']);
 Route::post('/createorder',[TransactionsController::class,'create_order']);
+Route::post('/shopping-cart/create',[ShoppingCartsController::class,'create_cart']);
+Route::post('/shopping-cart/read',[ShoppingCartsController::class,'read_cart']);
